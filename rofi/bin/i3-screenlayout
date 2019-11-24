@@ -1,0 +1,51 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    echo "i3-screen-layout [ name | list | dmenu | define ]"
+    exit
+fi
+
+LAYOUT=$1
+
+function list_layouts () {
+    for layout in ~/.screenlayout/*.sh ;
+    do
+        echo "$(basename -- ${layout} .sh)"
+    done
+}
+
+function apply_layout () {
+    if [[ -e ~/.screenlayout/${LAYOUT}.sh ]] ; then
+        sh ~/.screenlayout/${LAYOUT}.sh
+        [[ -e ~/.screenlayout/${LAYOUT}.sh-after ]] && \
+            sh ~/.screenlayout/${LAYOUT}.sh-after
+        echo Switched to ${LAYOUT} layout
+    else
+        echo "${LAYOUT} not available"
+    fi
+}
+
+function with_external_completion () {
+    if [[ -e `which rofi` ]] ; then
+        LAYOUT=`echo define | list_layouts | rofi -theme solarized_alternate -dmenu -p Layout`
+        [[ $LAYOUT != "" ]] && apply_layout
+    else
+        LAYOUT=`echo define | list_layouts | dmenu -p Layout`
+        [[ $LAYOUT != "" ]] && apply_layout
+    fi
+}
+
+case ${LAYOUT} in
+    define)
+        arandr
+        ;;
+    list)
+        list_layouts
+        ;;
+    dmenu)
+        with_external_completion
+        ;;
+    *)
+        apply_layout
+esac
+

@@ -1,0 +1,264 @@
+# (No) Title Bars
+for_window [class="^.*"] border pixel 0
+
+# Gaps
+gaps inner 5
+gaps outer 0
+smart_gaps on
+
+set $base03    #002b36
+set $base02    #073642
+set $base01    #586e75
+set $base00    #657b83
+set $base0     #839496
+set $base1     #93a1a1
+set $base2     #eee8d5
+set $base3     #fdf6e3
+set $yellow    #b58900
+set $orange    #cb4b16
+set $red       #dc322f
+set $magenta   #d33682
+set $violet    #6c71c4
+set $blue      #268bd2
+set $cyan      #2aa198
+set $green     #859900
+SET $transparent #00000000
+set $bg-color $base02           #2f343f
+set $inactive-bg-color $bases03  #2f343f
+set $text-color $base1         #f3f4f5
+set $inactive-text-color $base2 #676E7D
+set $urgent-bg-color $orange     #E53935
+
+set $mod Mod4
+set $alt Mod1
+set $ctrl Control
+
+bindsym $ctrl+1 exec --no-startup-id setxkbmap us -option caps:escape
+bindsym $ctrl+2 exec --no-startup-id setxkbmap es -option caps:escape
+bindsym $ctrl+3 exec --no-startup-id setxkbmap fi -option caps:escape
+bindsym $ctrl+4 exec --no-startup-id setxkbmap ru -option caps:escape
+
+bindsym $mod+x exec --no-startup-id sh $HOME/.config/lock_bar.sh
+
+bindsym $alt+Shift+1 exec maim -o ~/Pictures/Screenshots/$(date +%s).png | xclip -selection clipboard -t image/png
+bindsym $alt+Shift+2 exec maim -o -s ~/Pictures/Screenshots/$(date +%s).png | xclip -selection clipboard -t image/png
+bindsym $alt+Shift+3 exec maim -o -s | xclip -selection clipboard -t image/png
+
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+i mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+font pango:Helvetica Neue, FontAwesome 11
+
+#font pango:DejaVu Sans Mono 8
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+bindsym $mod+Return exec kitty
+bindsym $mod+Shift+Return exec /etc/alternatives/x-www-browser
+bindsym $mod+n exec thunar
+bindsym $mod+m exec kitty -e ranger
+bindsym $mod+t exec google-chrome-stable
+bindsym $mod+y exec surf
+
+# Kill focused window
+bindsym $mod+q kill
+
+
+# rofi
+bindsym $mod+g exec --no-startup-id echo "" | rofi -theme solarized_alternate -dmenu -p "Search:" | xargs -I{} xdg-open https://www.google.de/search?q={}
+bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu='rofi -i -dmenu -theme solarized_alternate -font "IBM Plex Sans Medium 15"'
+#bindsym $alt+F1 exec deepin-terminal -q
+bindsym $alt+F2 exec --no-startup-id $HOME/.config/rofi/bin/nmcli-rofi.sh
+bindsym $alt+F3 exec --no-startup-id $HOME/.config/rofi/bin/i3-screenlayout dmenu
+bindsym $alt+F12 exec --no-startup-id $HOME/.config/rofi/bin/powermenu.sh
+bindsym $mod+d exec --no-startup-id dmenu_run
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+- split h
+# split in vertical orientation
+bindsym $mod+= split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+#bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# switch to workspace
+bindsym $alt+1 workspace 1
+bindsym $alt+2 workspace 2
+bindsym $alt+3 workspace 3
+bindsym $alt+4 workspace 4
+bindsym $alt+5 workspace 5
+bindsym $alt+6 workspace 6
+bindsym $alt+7 workspace 7
+bindsym $alt+8 workspace 8
+bindsym $alt+9 workspace 9
+bindsym $alt+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# Move focus between screenss
+bindsym $mod+Alt+h focus output left
+bindsym $mod+Alt+l focus output right
+
+# Move window to output
+bindsym $mod+$alt+Left move workspace to output left
+bindsym $mod+$alt+Right move workspace to output right
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'End X session?' -b 'Logout' 'i3-msg exit' -b 'Suspend' 'sh $HOME/.config/lock_bar.sh && systemctl suspend' -b 'Shutdown' 'systemctl poweroff'
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute sound
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 5 ppt
+        bindsym k resize grow height 10 px or 5 ppt
+        bindsym l resize shrink height 10 px or 5 ppt
+        bindsym semicolon resize grow width 10 px or 5 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 5 ppt
+        bindsym Down resize grow height 10 px or 5 ppt
+        bindsym Up resize shrink height 10 px or 5 ppt
+        bindsym Right resize grow width 10 px or 5 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+
+# i3bar
+#bar {
+#        verbose yes
+#        position top
+        # output DP-1-8
+#        status_command i3blocks #-c ~/.config/i3/i3blocks.conf
+#        i3bar_command i3bar -t
+#        tray_output primary
+#        colors {
+#          statusline $base01
+#          background $base02
+#          separator #757575
+#    #                  border             background         text
+#          focused_workspace  $base02          #268BD2          #ffffff
+#          inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+#          urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+#        }
+#}
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# Starting things with i3
+# exec --no-startup-id xcompmgr -C &    # Bare compositor to allow transparency
+for_window [class="Deepin-terminal"] floating enable;
+
+exec --no-startup-id hsetroot -solid '#073642'
+exec_always --no-startup-id xrdb ~/.Xresources
+#exec --no-startup-id xrandr --output eDP-1-1 --mode 1920x1080 --pos 0x360 --rotate normal --output HDMI-1-1 --primary --mode 2560x1440 --pos 1920x0 --rotate normal
+#exec --no-startup-id nm-applet
+#exec --no-startup-id blueman-applet
+exec --no-startup-id compton --config ~/.config/compton.conf -b
+exec --no-startup-id xinput set-prop 14 320 1
+exec --no-startup-id xinput set-prop 14 312 1
+exec --no-startup-id xset r rate 250 60
+#exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper/wallpaper.jpg
+#exec --no-startup-id xfce4-panel -d
+
